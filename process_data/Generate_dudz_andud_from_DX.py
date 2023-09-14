@@ -4,6 +4,10 @@
 Created on Wed Dec  7 13:29:45 2022
 
 @author: juanpelvis
+
+This script computes the DUDZ and UD using the time windows found in LIST_OF_DX_DAYS
+We should adapt the start and end dates: we lose half DX at the beginning and the end of the period
+i.e., if DX is 30 days, the period should be 
 """
 from multiprocessing import Pool
 
@@ -68,6 +72,7 @@ def main_process(DX):
     borehole.compute_ud_lsq()
     #
     borehole.dudz_lsq.to_csv( path + 'NEW_DUDZ_DX' + str(DX) + 'daysBH2_paperperiod' + extra + 'test.csv')#'4Anuar.csv')
+    borehole.dudz_lsq.mean().to_csv( path + 'MEAN_NEW_DUDZ_DX' + str(DX) + 'daysBH2_paperperiod' + extra + 'test.csv')#'4Anuar.csv')    
     borehole.ud_lsq.to_csv( path + 'NEW_UD_DX' + str(DX) + 'daysBH2_paperperiod' + extra + 'test.csv')#'4Anuar.csv')
     print('Finished for DX = ' + str(DX) + ' days\n')
     return borehole
@@ -75,5 +80,3 @@ def main_process(DX):
 p = Pool()
 with p:
     p.map( main_process, LIST_OF_DX_days)
-    
-borehole = main_process(30)
